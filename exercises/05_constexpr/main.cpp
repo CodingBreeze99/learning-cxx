@@ -1,14 +1,26 @@
 #include "../exercise.h"
+#include <climits>
+#include <stdexcept>
 
 constexpr unsigned long long fibonacci(int i) {
-    switch (i) {
-        case 0:
-            return 0;
-        case 1:
-            return 1;
-        default:
-            return fibonacci(i - 1) + fibonacci(i - 2);
-    }
+   if (i <= 0) {
+       return 0;
+   } else if (i == 1) {
+       return 1;
+   } else {
+      unsigned long long a = 0;
+      unsigned long long b = 1;
+      for (int index = 2; index <= i; ++index) {
+        if(ULLONG_MAX - a < b) {
+            // Overflow detected
+           throw std::overflow_error("Overflow long long limit in fibonacci calculation");
+        }
+        unsigned long long temp = a + b;
+        a = b;
+        b = temp;
+      }
+      return b;
+   }
 }
 
 int main(int argc, char **argv) {
